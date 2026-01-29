@@ -5,7 +5,7 @@ import {
 } from 'recharts';
 import { TrendingUp, Building2, ShoppingCart, FileText, ArrowUpRight, DollarSign, Activity, Upload, RefreshCw, List, Check, Truck } from 'lucide-react';
 
-// --- Default Data (Updated: Separating Supplier and Item) ---
+// --- Default Data (Updated based on uploaded CSV: 2026.01.28-1) ---
 const DEFAULT_SUMMARY_DATA = [
     { site: '광명 뉴타운 11R', type: '입찰비교 주문', dec25: 4569782, jan26: 2529854 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', dec25: 747000, jan26: 4837840 },
@@ -15,21 +15,34 @@ const DEFAULT_SUMMARY_DATA = [
     { site: '광명11-2R(3공구)재개발공사', type: '사무용품 주문', dec25: 83400, jan26: 51240 }
 ];
 
-// Item-level Data (Corrected: Supplier vs Item Name)
+// Item-level Data (Fully populated from CSV-1)
 const DEFAULT_ITEM_DATA = [
-    // Bid items: Item Name is generic or empty, Supplier is filled
+    // --- Bid items (입찰비교) ---
     { site: '광명 뉴타운 11R', type: '입찰비교 주문', supplier: '(주)우성종합건재', itemName: '-', total: 4029500, dec: 3938500, jan: 91000 },
     { site: '광명11-2R(3공구)재개발공사', type: '입찰비교 주문', supplier: '(주)남문건축자재안전', itemName: '-', total: 3222400, dec: 2183600, jan: 1038800 },
     { site: '광명 뉴타운 11R', type: '입찰비교 주문', supplier: '(주)오케이산업안전', itemName: '-', total: 1574100, dec: 218360, jan: 1355740 },
 
-    // Reverse Issue Items: Both filled
+    // --- Reverse Issue Items (역발행) - Updated Suppliers ---
+    // 광명 뉴타운 11R Items
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '하이수절목 포함 5건', total: 1324500, dec: 0, jan: 1324500 },
-    { site: '광명11-2R(3공구)재개발공사', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '투싸이클오일 포함 4건', total: 1167500, dec: 0, jan: 1167500 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)남문건축자재안전', itemName: '앙카식 안전난간대', total: 712500, dec: 0, jan: 712500 },
-    { site: '광명11-2R(3공구)재개발공사', type: '역발행 주문', supplier: '(주)오케이산업안전', itemName: '차양막(흑색) 포함 1건', total: 720000, dec: 0, jan: 720000 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)오케이산업안전', itemName: 'PVC 수직보호망', total: 506000, dec: 0, jan: 506000 },
-    { site: '광명11-2R(3공구)재개발공사', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: 'PVC파이프 VG2 포함 7건', total: 398600, dec: 0, jan: 398600 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '천막 10*10 포함 2건', total: 383400, dec: 0, jan: 383400 },
+    { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '마대 포함 2건', total: 378000, dec: 0, jan: 378000 },
+    { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '캠록(AL) 포함 2건', total: 375000, dec: 0, jan: 375000 },
+    { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)남문건축자재안전', itemName: '쇠말뚝 포함 2건', total: 352344, dec: 352344, jan: 0 },
+    { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '마대_톤백 포함 1건', total: 288000, dec: 288000, jan: 0 },
+    { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '하이박스 전자계량기 차단기 포함 1건', total: 242000, dec: 242000, jan: 0 },
+    { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '파이프캡(실리콘) 포함 1건', total: 230000, dec: 0, jan: 230000 },
+    { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: 'PVC 수직보호망 포함 1건', total: 145000, dec: 145000, jan: 0 },
+    { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '안전장화 포함 2건', total: 72000, dec: 72000, jan: 0 },
+    { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '사라직결피스 포함 1건', total: 32000, dec: 0, jan: 32000 },
+    { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '확산소화기 포함 1건', total: 23000, dec: 0, jan: 23000 },
+
+    // 광명11-2R(3공구) Items
+    { site: '광명11-2R(3공구)재개발공사', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '투싸이클오일 포함 4건', total: 1167500, dec: 0, jan: 1167500 },
+    { site: '광명11-2R(3공구)재개발공사', type: '역발행 주문', supplier: '(주)오케이산업안전', itemName: '차양막(흑색) 포함 1건', total: 720000, dec: 0, jan: 720000 },
+    { site: '광명11-2R(3공구)재개발공사', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: 'PVC파이프 VG2 포함 7건', total: 398600, dec: 0, jan: 398600 },
 ];
 
 const COLORS = ['#1E3A8A', '#3B82F6', '#60A5FA', '#93C5FD', '#BFDBFE'];
@@ -147,8 +160,15 @@ export default function App() {
                         supplierName = cleanRow[2];
                         itemName = "-";
                     } else if (currentSectionType === "역발행 주문") {
-                        supplierName = cleanRow[1];
-                        itemName = cleanRow[2];
+                        // Adjust for CSV-1 format: Supplier is typically in col 1, Item in col 2
+                        // But handle variations if user uploads older format
+                        if (cleanRow[1] && cleanRow[1].includes("(주)")) {
+                            supplierName = cleanRow[1];
+                            itemName = cleanRow[2];
+                        } else {
+                            supplierName = cleanRow[1];
+                            itemName = cleanRow[2];
+                        }
                     }
 
                     // Validation and Skip conditions
@@ -301,7 +321,7 @@ export default function App() {
                         </div>
                         <h1 className="text-2xl font-bold text-slate-800">신영토건 현장별 [공새로] 사용 현황</h1>
                     </div>
-                    <p className="text-slate-500 ml-12">PoC 기간 구매 데이터 분석 대시보드</p>
+                    <p className="text-slate-500 ml-12">PoC 기간 구매 데이터 분석 대시보드 (2025.12 ~ 2026.01)</p>
                 </div>
 
                 {/* File Upload Control */}
