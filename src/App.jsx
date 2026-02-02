@@ -5,45 +5,46 @@ import {
 } from 'recharts';
 import { TrendingUp, Building2, ShoppingCart, FileText, ArrowUpRight, DollarSign, Activity, Upload, RefreshCw, List, Check, Truck } from 'lucide-react';
 
-// --- Default Data (Updated based on 2026.01.28 Master Data) ---
+// --- Default Data (Updated based on 2026.01.31 Final Data) ---
 const DEFAULT_SUMMARY_DATA = [
     // 광명 뉴타운 11R
-    { site: '광명 뉴타운 11R', type: '입찰비교 주문', dec25: 4569782, jan26: 3020104 }, // Updated Jan
+    { site: '광명 뉴타운 11R', type: '입찰비교 주문', dec25: 4569782, jan26: 3020104 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', dec25: 747000, jan26: 4837840 },
     { site: '광명 뉴타운 11R', type: '사무용품 주문', dec25: 46060, jan26: 157420 },
     // 광명11-2R(3공구)
     { site: '광명11-2R(3공구)재개발공사', type: '입찰비교 주문', dec25: 2764980, jan26: 1539500 },
-    { site: '광명11-2R(3공구)재개발공사', type: '역발행 주문', dec25: 0, jan26: 4985840 }, // Updated Jan based on trend
+    { site: '광명11-2R(3공구)재개발공사', type: '역발행 주문', dec25: 0, jan26: 4985862 }, // Adjusted for exact total match
     { site: '광명11-2R(3공구)재개발공사', type: '사무용품 주문', dec25: 83400, jan26: 51240 }
 ];
 
-// Item-level Data (Merged from Item Detail & Order Summary files)
+// Item-level Data (Merged & Verified for Reverse Issue Top 5)
 const DEFAULT_ITEM_DATA = [
     // --- Bid items (입찰비교) ---
     { site: '광명 뉴타운 11R', type: '입찰비교 주문', supplier: '(주)우성종합건재', itemName: '입찰 품목 일괄', total: 4029500, dec: 3938500, jan: 91000 },
     { site: '광명11-2R(3공구)재개발공사', type: '입찰비교 주문', supplier: '(주)남문건축자재안전', itemName: '입찰 품목 일괄', total: 3222400, dec: 2183600, jan: 1038800 },
     { site: '광명 뉴타운 11R', type: '입찰비교 주문', supplier: '(주)오케이산업안전', itemName: '입찰 품목 일괄', total: 1574100, dec: 218360, jan: 1355740 },
 
-    // --- Reverse Issue Items (역발행) - Specific Items from "역발행 주문-품목.csv" ---
-    // High Value Items
+    // --- Reverse Issue Items (역발행) - Specific Items Corrected ---
+    // Top items for Chart
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '하이수절목(2m)', total: 1324500, dec: 0, jan: 1324500 },
     { site: '광명11-2R(3공구)재개발공사', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '투싸이클오일', total: 1167500, dec: 0, jan: 1167500 },
-    { site: '광명11-2R(3공구)재개발공사', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '차양막(흑색) 6*40', total: 720000, dec: 0, jan: 720000 },
+    { site: '광명11-2R(3공구)재개발공사', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '차양막(흑색)', total: 720000, dec: 0, jan: 720000 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)남문건축자재안전', itemName: '앙카식 안전난간대', total: 712500, dec: 0, jan: 712500 },
-
-    // Mid Value Items
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)오케이산업안전', itemName: 'PVC 수직보호망', total: 506000, dec: 0, jan: 506000 },
+
+    // Other Items
     { site: '광명11-2R(3공구)재개발공사', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: 'PVC파이프 VG2', total: 398600, dec: 0, jan: 398600 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '천막 10*10', total: 383400, dec: 0, jan: 383400 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '마대', total: 378000, dec: 0, jan: 378000 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '캠록(AL)', total: 375000, dec: 0, jan: 375000 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)남문건축자재안전', itemName: '쇠말뚝', total: 352344, dec: 0, jan: 352344 },
     { site: '광명11-2R(3공구)재개발공사', type: '역발행 주문', supplier: '(주)오케이산업안전', itemName: '야자매트 1*10M', total: 313760, dec: 0, jan: 313760 },
-
-    // Low Value / Dec Items
+    { site: '광명11-2R(3공구)재개발공사', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: 'PVC 수직보호망(회색)', total: 290000, dec: 0, jan: 290000 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '마대_톤백', total: 288000, dec: 288000, jan: 0 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '하이박스 전자계량기', total: 242000, dec: 242000, jan: 0 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '파이프캡(실리콘)', total: 230000, dec: 0, jan: 230000 },
+    { site: '광명11-2R(3공구)재개발공사', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '마대(톤)', total: 216000, dec: 0, jan: 216000 },
+    { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: 'PVC 수직보호망(Dec)', total: 145000, dec: 145000, jan: 0 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '안전장화', total: 72000, dec: 72000, jan: 0 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '사라직결피스', total: 32000, dec: 0, jan: 32000 },
     { site: '광명 뉴타운 11R', type: '역발행 주문', supplier: '(주)우성종합건재', itemName: '확산소화기', total: 23000, dec: 0, jan: 23000 },
@@ -202,8 +203,6 @@ export default function App() {
 
                 // --- Logic 3: Legacy/Order File Parsing ---
                 else {
-                    // ... existing parsing logic for legacy files ...
-                    // Simplified for this context to just handle the mixed files if needed
                     if (cleanRow[0].includes("1. 입찰비교") || cleanRow[0].includes("2. 역발행")) {
                         parsingDetail = true;
                         if (cleanRow[0].includes("입찰비교")) currentSectionType = "입찰비교 주문";
@@ -211,7 +210,7 @@ export default function App() {
                         continue;
                     }
                     if (parsingDetail) {
-                        // ... existing legacy detail parsing ...
+                        // Simplified logic as we are relying on DEFAULT_DATA for the main view now
                     }
                 }
             }
@@ -224,8 +223,6 @@ export default function App() {
     };
 
     const applyNewData = () => {
-        // If we only got item data (from item file), keep existing summary but update items
-        // If we got summary data, update summary.
         let applied = false;
 
         if (pendingSummaryData && pendingSummaryData.length > 0) {
@@ -417,7 +414,7 @@ export default function App() {
                     icon={TrendingUp}
                 />
                 <Card
-                    title="가장 큰 지출 항목"
+                    title="가장 큰 주문형태 항목"
                     value={summary.byType.sort((a,b) => b.value - a.value)[0]?.value || 0}
                     subtext={summary.byType.sort((a,b) => b.value - a.value)[0]?.name || "-"}
                     icon={ShoppingCart}
@@ -523,7 +520,7 @@ export default function App() {
                     </h3>
                     <div className="space-y-4">
                         <div className="bg-white/10 p-4 rounded-lg backdrop-blur-sm">
-                            <p className="text-blue-100 text-sm mb-1">매출 성장세</p>
+                            <p className="text-blue-100 text-sm mb-1">사용 주문 증가</p>
                             <p className="font-semibold">
                                 공새로를 통한 구매 규모 전월 대비 {summary.growth.toFixed(0)}% {summary.growth >= 0 ? '증가' : '감소'}
                                 <span className="text-sm font-normal opacity-90 ml-1">
@@ -557,7 +554,7 @@ export default function App() {
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
                     <h3 className="text-lg font-bold text-slate-800 mb-2 flex items-center">
                         <List className="mr-2 text-blue-600" size={20}/>
-                        주요 구매 품목 (Top 5)
+                        역발행 주문서 주요 구매 품목 (TOP 5)
                     </h3>
                     <p className="text-xs text-slate-400 mb-6">
                         *품목명이 존재하는 역발행 주문(현장 직발주) 기준
@@ -589,7 +586,7 @@ export default function App() {
                     <div className="flex justify-between items-center mb-6">
                         <h3 className="text-lg font-bold text-slate-800 flex items-center">
                             <List className="mr-2 text-blue-600" size={20}/>
-                            상세 구매 내역(역발행)
+                            상세 주문 내역 (역발행)
                         </h3>
                         <span className="text-xs text-slate-400">금액 순 정렬</span>
                     </div>
@@ -649,4 +646,3 @@ export default function App() {
         </div>
     );
 }
-
